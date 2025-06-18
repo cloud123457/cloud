@@ -35,7 +35,7 @@ def upload_to_drive(file_path):
     }
     media = MediaFileUpload(file_path, resumable=True)
     service.files().create(body=file_metadata, media_body=media).execute()
-    print(f'✅ Uploaded to Drive: {file_path}')
+    print(f' Uploaded to Drive: {file_path}')
 
 def browse_and_save_manual_files():
     file_paths = filedialog.askopenfilenames(
@@ -46,8 +46,8 @@ def browse_and_save_manual_files():
         new_path = os.path.join(MANUAL_DIR, filename)
         with open(path, 'rb') as src, open(new_path, 'wb') as dst:
             dst.write(src.read())
-        print(f'📁 Saved manually: {new_path}')
-    status_label.config(text=f"✅ تم حفظ {len(file_paths)} ملف يدوياً.")
+        print(f' Saved manually: {new_path}')
+    status_label.config(text=f" تم حفظ {len(file_paths)} ملف يدوياً.")
 
 def upload_all_documents():
     all_files = []
@@ -59,7 +59,7 @@ def upload_all_documents():
     for file in all_files:
         upload_to_drive(file)
 
-    status_label.config(text=f"✅ تم رفع {len(all_files)} ملف إلى Google Drive.")
+    status_label.config(text=f" تم رفع {len(all_files)} ملف إلى Google Drive.")
 
 def download_files_from_drive():
     creds = Credentials.from_authorized_user_file('token.json', SCOPES)
@@ -71,7 +71,7 @@ def download_files_from_drive():
     files = results.get('files', [])
 
     if not files:
-        status_label.config(text="ℹ️ لم يتم العثور على ملفات PDF أو DOCX في Google Drive.")
+        status_label.config(text=" لم يتم العثور على ملفات PDF أو DOCX في Google Drive.")
         return
 
     for file in files:
@@ -90,7 +90,7 @@ def download_files_from_drive():
         fh.close()
         print(f'⬇️ تم تنزيل: {file_name}')
 
-    status_label.config(text=f"✅ تم تنزيل {len(files)} ملف من Google Drive إلى {MANUAL_DIR}.")
+    status_label.config(text=f" تم تنزيل {len(files)} ملف من Google Drive إلى {MANUAL_DIR}.")
 
 def extract_title(file_path):
     if file_path.endswith('.pdf'):
@@ -105,7 +105,7 @@ def extract_title(file_path):
                     if text:
                         return text.strip().split('\n')[0]
         except Exception as e:
-            print(f'❌ Error reading PDF: {file_path} | {e}')
+            print(f' Error reading PDF: {file_path} | {e}')
 
     elif file_path.endswith('.docx'):
         try:
@@ -114,7 +114,7 @@ def extract_title(file_path):
                 if p.text.strip():
                     return p.text.strip()
         except Exception as e:
-            print(f'❌ Error reading DOCX: {file_path} | {e}')
+            print(f' Error reading DOCX: {file_path} | {e}')
 
     return "عنوان غير معروف"
 
@@ -147,7 +147,7 @@ def sort_documents_by_title():
     last_sort_time = elapsed
 
     result_window = tk.Toplevel(root)
-    result_window.title("📄 المستندات المرتبة حسب العنوان")
+    result_window.title(" المستندات المرتبة حسب العنوان")
     result_window.geometry("500x400")
 
     text_widget = tk.Text(result_window, wrap=tk.WORD)
@@ -159,7 +159,7 @@ def sort_documents_by_title():
     total_files, total_size = get_documents_stats()
     size_mb = total_size / (1024 * 1024)
 
-    status_label.config(text=f"✅ تم فرز {len(sorted_docs)} ملف حسب العنوان. "
+    status_label.config(text=f" تم فرز {len(sorted_docs)} ملف حسب العنوان. "
                              f"عدد المستندات: {total_files}، الحجم الكلي: {size_mb:.2f} ميجابايت، وقت الفرز: {elapsed:.2f} ثانية.")
 
 def extract_text(file_path):
@@ -175,7 +175,7 @@ def extract_text(file_path):
                 if p.text:
                     text += p.text + "\n"
     except Exception as e:
-        print(f'❌ Error reading file: {file_path} | {e}')
+        print(f' Error reading file: {file_path} | {e}')
     return text
 
 def search_documents(keywords):
@@ -219,7 +219,7 @@ def open_search_results(keywords):
     last_search_time = elapsed
 
     if not results:
-        status_label.config(text="❌ لم يتم العثور على ملفات تحتوي الكلمات المفتاحية.")
+        status_label.config(text=" لم يتم العثور على ملفات تحتوي الكلمات المفتاحية.")
         return
 
     result_window = tk.Toplevel(root)
@@ -230,7 +230,7 @@ def open_search_results(keywords):
     text_widget.pack(expand=True, fill=tk.BOTH)
 
     for file_path, content in results:
-        text_widget.insert(tk.END, f"📄 {os.path.basename(file_path)}\n")
+        text_widget.insert(tk.END, f" {os.path.basename(file_path)}\n")
         preview = content[:1000]
         text_widget.insert(tk.END, preview + "\n\n")
 
@@ -239,7 +239,7 @@ def open_search_results(keywords):
     total_files, total_size = get_documents_stats()
     size_mb = total_size / (1024 * 1024)
 
-    status_label.config(text=f"✅ تم العثور على {len(results)} ملف يحتوي الكلمات المفتاحية. "
+    status_label.config(text=f" تم العثور على {len(results)} ملف يحتوي الكلمات المفتاحية. "
                              f"عدد المستندات: {total_files}، الحجم الكلي: {size_mb:.2f} ميجابايت، وقت البحث: {elapsed:.2f} ثانية.")
 
 def classify_documents():
@@ -280,7 +280,7 @@ def classify_documents():
     last_classify_time = elapsed
 
     result_window = tk.Toplevel(root)
-    result_window.title("📂 التصنيف حسب الشجرة")
+    result_window.title(" التصنيف حسب الشجرة")
     result_window.geometry("500x400")
 
     text_widget = tk.Text(result_window, wrap=tk.WORD)
@@ -295,7 +295,7 @@ def classify_documents():
     total_files, total_size = get_documents_stats()
     size_mb = total_size / (1024 * 1024)
 
-    status_label.config(text=f"✅ تم تصنيف {sum(len(v) for v in classified.values())} ملف. "
+    status_label.config(text=f" تم تصنيف {sum(len(v) for v in classified.values())} ملف. "
                              f"عدد المستندات: {total_files}، الحجم الكلي: {size_mb:.2f} ميجابايت، وقت التصنيف: {elapsed:.2f} ثانية.")
 
 def show_statistics():
@@ -329,21 +329,21 @@ root = tk.Tk()
 root.title("Document Collector")
 root.geometry("400x600")
 
-tk.Label(root, text="📁 رفع ملفات PDF/Word يدوياً", font=("Arial", 14)).pack(pady=10)
+tk.Label(root, text=" رفع ملفات PDF/Word يدوياً", font=("Arial", 14)).pack(pady=10)
 
-btn1 = tk.Button(root, text="👡 اختيار ملفات من الجهاز", command=browse_and_save_manual_files, width=30)
+btn1 = tk.Button(root, text=" اختيار ملفات من الجهاز", command=browse_and_save_manual_files, width=30)
 btn1.pack(pady=10)
 
-btn_download = tk.Button(root, text="⬇️ تنزيل الملفات من Drive", command=download_files_from_drive, width=30, bg="lightcyan")
+btn_download = tk.Button(root, text=" تنزيل الملفات من Drive", command=download_files_from_drive, width=30, bg="lightcyan")
 btn_download.pack(pady=10)
 
-btn2 = tk.Button(root, text="🔠 فرز الملفات حسب العنوان", command=sort_documents_by_title, width=30, bg="lightblue")
+btn2 = tk.Button(root, text=" فرز الملفات حسب العنوان", command=sort_documents_by_title, width=30, bg="lightblue")
 btn2.pack(pady=10)
 
-btn3 = tk.Button(root, text="☁️ رفع الملفات إلى Drive", command=upload_all_documents, width=30, bg="lightgreen")
+btn3 = tk.Button(root, text=" رفع الملفات إلى Drive", command=upload_all_documents, width=30, bg="lightgreen")
 btn3.pack(pady=10)
 
-btn4 = tk.Button(root, text="🧠 تصنيف المستندات", command=classify_documents, width=30, bg="lightyellow")
+btn4 = tk.Button(root, text=" تصنيف المستندات", command=classify_documents, width=30, bg="lightyellow")
 btn4.pack(pady=10)
 
 search_entry = tk.Entry(root, width=40)
@@ -355,12 +355,12 @@ def on_search_clicked():
         keywords = query.split()
         open_search_results(keywords)
     else:
-        status_label.config(text="❌ الرجاء إدخال كلمات للبحث.")
+        status_label.config(text=" الرجاء إدخال كلمات للبحث.")
 
-search_btn = tk.Button(root, text="🔍 بحث في المستندات", command=on_search_clicked, bg="orange", width=30)
+search_btn = tk.Button(root, text=" بحث في المستندات", command=on_search_clicked, bg="orange", width=30)
 search_btn.pack(pady=5)
 
-stats_btn = tk.Button(root, text="📊 عرض الإحصائيات", command=show_statistics, width=30, bg="lightgray")
+stats_btn = tk.Button(root, text=" عرض الإحصائيات", command=show_statistics, width=30, bg="lightgray")
 stats_btn.pack(pady=15)
 
 status_label = tk.Label(root, text="", fg="green", font=("Arial", 11))
