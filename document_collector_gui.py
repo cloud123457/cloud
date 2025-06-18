@@ -27,8 +27,7 @@ def upload_to_drive(file_path):
     creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     service = build('drive', 'v3', credentials=creds)
     
-    folder_id = '1xIuZs_-AwFjM7D7Yc8-YWc9gXULl_SYG'  # معرف مجلد جوجل درايف الخاص بك
-    
+    folder_id = '1xIuZs_-AwFjM7D7Yc8-YWc9gXULl_SYG'    
     file_metadata = {
         'name': os.path.basename(file_path),
         'parents': [folder_id]
